@@ -218,7 +218,9 @@ export default class AutoLinkTitle extends Plugin {
   async fetchUrlTitle(url: string): Promise<string> {
     try {
       const title = await getPageTitle(url);
-      return title.replace(/(\r\n|\n|\r)/gm, "").trim();
+      const titleFormat = title?.replace(/[\r\n]+/g, '')?.trim();
+      const [titleWithoutSuffix] = titleFormat?.split("|") ?? [titleFormat];
+      return titleWithoutSuffix;
     } catch (error) {
       // console.error(error)
       return "Site Unreachable";
